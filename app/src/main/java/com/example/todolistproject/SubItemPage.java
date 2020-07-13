@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -32,6 +34,16 @@ public class SubItemPage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_sub_page);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab_sub);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),AddSubItem.class);
+                intent.putExtra("id",documentId);
+                startActivity(intent);
+            }
+        });
+
 
         setUpRecyclerView();
 
@@ -41,7 +53,7 @@ public class SubItemPage extends AppCompatActivity {
         Intent intent = getIntent();
         documentId = intent.getStringExtra("id");
 
-        Query query = db.collection("List").document(documentId).collection("sub");
+        Query query = db.collection("List").document(documentId).collection("Sub list");
         FirestoreRecyclerOptions<ItemModel> options = new FirestoreRecyclerOptions.Builder<ItemModel>()
                 .setQuery(query, ItemModel.class)
                 .build();

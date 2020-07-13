@@ -1,19 +1,19 @@
 package com.example.todolistproject;
 
 public class ItemModel {
-    String itemName;
+    String item;
 
     public ItemModel(){}
 
-    public ItemModel(String itemName) {
-        this.itemName = itemName;
+    public ItemModel(String item) {
+        this.item = item;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem() {
+        return item;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItem(String item) {
+        this.item = item;
     }
 }

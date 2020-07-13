@@ -19,7 +19,7 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
 
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull ItemModel model) {
-        holder.itemName.setText(model.getItemName());
+        holder.itemName.setText(model.getItem());
 
 
     }
