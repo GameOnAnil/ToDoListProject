@@ -2,12 +2,14 @@ package com.example.todolistproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -16,7 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ListItemListener {
+    private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 .setQuery(query, ListModel.class)
                 .build();
 
-        adapter = new RecyclerAdapter(options);
+        adapter = new RecyclerAdapter(options,this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -68,5 +71,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    public void onItemClicked(DocumentSnapshot snapshot) {
+
+        String id = snapshot.getId();
+        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:"+id);
+
+        Intent intent = new Intent(getApplicationContext(),SubItemPage.class);
+        intent.putExtra("id",id);
+        startActivity(intent);
+
     }
 }

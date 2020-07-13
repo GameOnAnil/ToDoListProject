@@ -4,16 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import
-        androidx.appcompat.widget.Toolbar;
+import android.util.Log;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class SubItemPage extends AppCompatActivity {
+    private static final String TAG = "SubItemPage";
     private RecyclerView recyclerView;
+    private String documentId;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerSubAdapter adapter;
@@ -28,12 +32,16 @@ public class SubItemPage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_sub_page);
         setSupportActionBar(toolbar);
 
+
         setUpRecyclerView();
 
     }
 
     public void setUpRecyclerView() {
-        Query query = db.collection("List").document("doc").collection("sub");
+        Intent intent = getIntent();
+        documentId = intent.getStringExtra("id");
+
+        Query query = db.collection("List").document(documentId).collection("sub");
         FirestoreRecyclerOptions<ItemModel> options = new FirestoreRecyclerOptions.Builder<ItemModel>()
                 .setQuery(query, ItemModel.class)
                 .build();
