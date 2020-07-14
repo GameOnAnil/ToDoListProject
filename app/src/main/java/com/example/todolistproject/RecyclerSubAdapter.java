@@ -20,10 +20,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, RecyclerSubAdapter.Viewholder> {
     private static final String TAG = "RecyclerSubAdapter";
-    
+    SubItemListener subItemListener;
 
-    public RecyclerSubAdapter(@NonNull FirestoreRecyclerOptions<ItemModel> options) {
+    public RecyclerSubAdapter(@NonNull FirestoreRecyclerOptions<ItemModel> options,SubItemListener subItemListener) {
         super(options);
+        this.subItemListener = subItemListener;
     }
 
     @Override
@@ -38,26 +39,9 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
         return new Viewholder(view);
     }
 
-    public void removeItem(int position,View view) {
-        DocumentSnapshot snapshot1 = getSnapshots().getSnapshot(position);
-         final DocumentReference documentReference = snapshot1.getReference();
-         final ItemModel itemModel = snapshot1.toObject(ItemModel.class);
-        
-        Log.d(TAG, "Remove method called for"+snapshot1.getId());
-        
-        documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "Data deleted");
-            }
-        });
-        Snackbar.make(view,"Are you sure",Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        documentReference.set(itemModel);
-                    }
-                }).show();
+    public void removeItem(int position) {
+        subItemListener.handleDeleteItem(getSnapshots().getSnapshot(position));
+
 
     }
 
@@ -68,9 +52,22 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION){
+                        subItemListener.subItemClicked(getSnapshots().getSnapshot(getAdapterPosition()));
+                    }
+                }
+            });
+
         }
+    }
 
-
+    interface SubItemListener{
+        public void subItemClicked(DocumentSnapshot snapshot);
+        public void handleDeleteItem(DocumentSnapshot snapshot);
     }
 
 

@@ -18,11 +18,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class SubItemPage extends AppCompatActivity  {
+public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapter.SubItemListener {
     private static final String TAG = "SubItemPage";
     private RecyclerView recyclerView;
     private String documentId;
@@ -61,7 +63,7 @@ public class SubItemPage extends AppCompatActivity  {
                 .setQuery(query, ItemModel.class)
                 .build();
 
-        adapter = new RecyclerSubAdapter(options);
+        adapter = new RecyclerSubAdapter(options,this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -92,10 +94,37 @@ public class SubItemPage extends AppCompatActivity  {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-          adapter.removeItem(viewHolder.getAdapterPosition(),recyclerView);
-
+          adapter.removeItem(viewHolder.getAdapterPosition());
         }
     };
 
 
+    @Override
+    public void subItemClicked(DocumentSnapshot snapshot) {
+        String id = snapshot.getId();
+        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:"+id);
+        Toast.makeText(this, "Item clicked"+id, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleDeleteItem(DocumentSnapshot snapshot) {
+         final DocumentReference documentReference = snapshot.getReference();
+         final ItemModel itemModel = snapshot.toObject(ItemModel.class);
+
+        Log.d(TAG, "Remove method called for"+snapshot.getId());
+
+        documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Data deleted");
+            }
+        });
+        Snackbar.make(recyclerView,"Are you sure",Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        documentReference.set(itemModel);
+                    }
+                }).show();
+    }
 }

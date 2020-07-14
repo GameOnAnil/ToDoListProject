@@ -59,6 +59,7 @@ public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, Recycle
     }
     public interface ListItemListener{
         void onItemClicked(DocumentSnapshot snapshot);
+
     }
 
 
