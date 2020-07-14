@@ -1,10 +1,12 @@
 package com.example.todolistproject;
 
+import android.graphics.Paint;
 import android.service.voice.AlwaysOnHotwordDetector;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.w3c.dom.Text;
 
 public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, RecyclerSubAdapter.Viewholder> {
     private static final String TAG = "RecyclerSubAdapter";
@@ -47,9 +51,10 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
 
 
     public class Viewholder extends RecyclerView.ViewHolder {
-        TextView itemName = itemView.findViewById(R.id.list_sub_name); 
+        TextView itemName = itemView.findViewById(R.id.list_sub_name);
+        CheckBox subCheckboc = itemView.findViewById(R.id.subCheckbox);
 
-        public Viewholder(@NonNull View itemView) {
+        public Viewholder(@NonNull final View itemView) {
             super(itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +64,18 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
                     if(position != RecyclerView.NO_POSITION){
                         subItemListener.subItemClicked(getSnapshots().getSnapshot(getAdapterPosition()));
                     }
+                }
+            });
+
+            subCheckboc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!itemName.getPaint().isStrikeThruText()){
+                        itemName.setPaintFlags(itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }else{
+                        itemName.setPaintFlags(itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG) );
+                    }
+
                 }
             });
 
