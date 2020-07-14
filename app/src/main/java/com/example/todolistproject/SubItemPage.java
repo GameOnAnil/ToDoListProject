@@ -1,6 +1,8 @@
 package com.example.todolistproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,15 +10,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class SubItemPage extends AppCompatActivity {
+public class SubItemPage extends AppCompatActivity  {
     private static final String TAG = "SubItemPage";
     private RecyclerView recyclerView;
     private String documentId;
@@ -43,10 +49,7 @@ public class SubItemPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
         setUpRecyclerView();
-
     }
 
     public void setUpRecyclerView() {
@@ -54,7 +57,7 @@ public class SubItemPage extends AppCompatActivity {
         documentId = intent.getStringExtra("id");
 
         Query query = db.collection("List").document(documentId).collection("Sub list");
-        FirestoreRecyclerOptions<ItemModel> options = new FirestoreRecyclerOptions.Builder<ItemModel>()
+        final FirestoreRecyclerOptions<ItemModel> options = new FirestoreRecyclerOptions.Builder<ItemModel>()
                 .setQuery(query, ItemModel.class)
                 .build();
 
@@ -62,6 +65,11 @@ public class SubItemPage extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
     }
 
     @Override
@@ -75,4 +83,19 @@ public class SubItemPage extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+          adapter.removeItem(viewHolder.getAdapterPosition(),recyclerView);
+
+        }
+    };
+
+
 }
