@@ -1,7 +1,10 @@
 package com.example.todolistproject;
 
 import android.graphics.Paint;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -37,14 +40,13 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
 
     public void removeItem(int position) {
         subItemListener.handleDeleteItem(getSnapshots().getSnapshot(position));
-
-
     }
-
 
     public class Viewholder extends RecyclerView.ViewHolder {
         TextView itemName = itemView.findViewById(R.id.list_sub_name);
+        TextView itemCompletedTxt = itemView.findViewById(R.id.list_sub_completed);
         CheckBox subCheckbox = itemView.findViewById(R.id.subCheckbox);
+
 
         public Viewholder(@NonNull final View itemView) {
             super(itemView);
@@ -64,14 +66,17 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
                 public void onClick(View view) {
                     if(!itemName.getPaint().isStrikeThruText()){
                         itemName.setPaintFlags(itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        itemCompletedTxt.setText("Completed");
                     }else{
                         itemName.setPaintFlags(itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG) );
+                        itemCompletedTxt.setText("");
                     }
 
                 }
             });
 
         }
+
     }
 
     interface SubItemListener{

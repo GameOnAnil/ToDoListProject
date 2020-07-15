@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,7 +26,7 @@ import java.util.Objects;
 public class AddSubItem extends AppCompatActivity {
     private static final String TAG = "AddList";
 
-    private EditText addSubDescription;
+    private TextInputEditText addSubDescription;
 
     String toStore;
     String documentId;
@@ -37,7 +38,7 @@ public class AddSubItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sub_item);
 
-        addSubDescription = findViewById(R.id.add_sub_description);
+        addSubDescription = findViewById(R.id.txt_sub_description);
 
         Toolbar toolbar_add_list = findViewById(R.id.toolbar_add_sub);
         setSupportActionBar(toolbar_add_list);

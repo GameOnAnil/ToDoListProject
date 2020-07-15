@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,9 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     private static final String TAG = "SubItemPage";
     private RecyclerView recyclerView;
     private String documentId;
-    private String saveDocumentId;
+    private Toolbar toolbar;
+
+    private ActionMode mActionMode;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerSubAdapter adapter;
@@ -48,7 +51,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
         recyclerView = findViewById(R.id.recycler_sub_view);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_sub_page);
+        toolbar = findViewById(R.id.toolbar_sub_page);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -142,6 +145,8 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         Toast.makeText(this, "Item clicked" + id, Toast.LENGTH_SHORT).show();
     }
 
+
+
     @Override
     public void handleDeleteItem(DocumentSnapshot snapshot) {
         final DocumentReference documentReference = snapshot.getReference();
@@ -163,6 +168,5 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
                     }
                 }).show();
     }
-
 
 }

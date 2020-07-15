@@ -16,10 +16,24 @@
         android:id="@+id/list_sub_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/subCheckbox"
         android:hint="Task"
         android:textColor="#000"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/list_sub_completed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@+id/subCheckbox"
+        android:layout_below="@+id/list_sub_name"
+        android:textSize="12sp"
+        />
 
 </RelativeLayout>
