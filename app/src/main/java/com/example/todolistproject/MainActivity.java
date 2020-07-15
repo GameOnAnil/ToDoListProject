@@ -110,13 +110,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        Log.d(TAG, "onStart: ");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+        Log.d(TAG, "onStop: ");
     }
+
 
     @Override
     public void onItemClicked(DocumentSnapshot snapshot) {

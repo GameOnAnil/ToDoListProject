@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,10 +32,11 @@ import com.google.firebase.firestore.Query;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapter.SubItemListener {
+public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter.SubItemListener {
     private static final String TAG = "SubItemPage";
     private RecyclerView recyclerView;
     private String documentId;
+    private String saveDocumentId;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerSubAdapter adapter;
@@ -45,20 +50,26 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
 
         Toolbar toolbar = findViewById(R.id.toolbar_sub_page);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.fab_sub);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),AddSubItem.class);
-                intent.putExtra("id",documentId);
+                Intent intent = new Intent(getApplicationContext(), AddSubItem.class);
+                intent.putExtra("id", documentId);
                 startActivity(intent);
             }
         });
+
+
         setUpRecyclerView();
+
     }
 
     public void setUpRecyclerView() {
+        Log.d(TAG, "setUpRecyclerView: setUpRecyclerView() called");
         Intent intent = getIntent();
         documentId = intent.getStringExtra("id");
 
@@ -67,7 +78,7 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
                 .setQuery(query, ItemModel.class)
                 .build();
 
-        adapter = new RecyclerSubAdapter(options,this);
+        adapter = new RecyclerSubAdapter(options, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -78,19 +89,30 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
+
+        Log.d(TAG, "onStart: `");
+
+        if (adapter != null) {
+            adapter.startListening();
+        }
     }
+
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+        Log.d(TAG, "onStop: ");
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -98,7 +120,7 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-          adapter.removeItem(viewHolder.getAdapterPosition());
+            adapter.removeItem(viewHolder.getAdapterPosition());
         }
 
         @Override
@@ -116,16 +138,16 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
     @Override
     public void subItemClicked(DocumentSnapshot snapshot) {
         String id = snapshot.getId();
-        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:"+id);
-        Toast.makeText(this, "Item clicked"+id, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:" + id);
+        Toast.makeText(this, "Item clicked" + id, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void handleDeleteItem(DocumentSnapshot snapshot) {
-         final DocumentReference documentReference = snapshot.getReference();
-         final ItemModel itemModel = snapshot.toObject(ItemModel.class);
+        final DocumentReference documentReference = snapshot.getReference();
+        final ItemModel itemModel = snapshot.toObject(ItemModel.class);
 
-        Log.d(TAG, "Remove method called for"+snapshot.getId());
+        Log.d(TAG, "Remove method called for" + snapshot.getId());
 
         documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -133,7 +155,7 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
                 Log.d(TAG, "Data deleted");
             }
         });
-        Snackbar.make(recyclerView,"Are you sure",Snackbar.LENGTH_LONG)
+        Snackbar.make(recyclerView, "Are you sure", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -141,4 +163,6 @@ public class SubItemPage extends AppCompatActivity  implements RecyclerSubAdapte
                     }
                 }).show();
     }
+
+
 }

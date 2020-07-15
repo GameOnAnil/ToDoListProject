@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubItemPage">
+    tools:context=".SubItemPage"
+
+    >
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="wrap_content"
@@ -22,7 +24,6 @@
             android:layout_marginStart="1dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="1dp"
-            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +31,8 @@
             app:layout_constraintTop_toTopOf="parent"
 
             app:title="Task list"
-            app:titleTextColor="#fff"/>
+            app:titleTextColor="#fff"
+            />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -53,6 +55,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar"
+       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

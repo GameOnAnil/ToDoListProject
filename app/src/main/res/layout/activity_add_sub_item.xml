@@ -22,15 +22,16 @@
             android:layout_marginStart="1dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="1dp"
-            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
             app:title="Add new list"
-            app:titleTextColor="#fff"/>
+            app:titleTextColor="#fff"
+
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+           />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -54,21 +55,6 @@
             android:textColor="#000"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/btn_store_sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="Add" />
-
-        <Button
-            android:id="@+id/go_to_main_sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="Go back" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
