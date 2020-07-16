@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <CheckBox
         android:id="@+id/subCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:gravity="center_horizontal"
-        />
+        android:gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/list_sub_name"
@@ -21,19 +19,44 @@
         android:layout_toRightOf="@+id/subCheckbox"
         android:hint="Task"
         android:textColor="#000"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/list_sub_completed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@+id/subCheckbox"
-        android:layout_below="@+id/list_sub_name"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp"
         android:textSize="12sp"
+
+        android:layout_alignBottom="@id/list_time"/>
+
+    <TextView
+        android:id="@+id/list_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="date"
+        android:textSize="13dp"
+
+        android:layout_below="@+id/list_sub_name"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@+id/subCheckbox"/>
+
+    <TextView
+        android:id="@+id/list_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:hint="time"
+        android:textSize="13dp"
+
+       android:layout_toEndOf="@id/list_date"
+        android:layout_below="@id/list_sub_name"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="6dp"
+
         />
 
 </RelativeLayout>

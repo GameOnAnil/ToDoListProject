@@ -29,6 +29,8 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull ItemModel model) {
         holder.itemName.setText(model.getItem());
+        holder.itemDate.setText(model.getDate());
+        holder.itemTime.setText(model.getTime());
     }
 
     @NonNull
@@ -40,11 +42,14 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
 
     public void removeItem(int position) {
         subItemListener.handleDeleteItem(getSnapshots().getSnapshot(position));
+
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
         TextView itemName = itemView.findViewById(R.id.list_sub_name);
         TextView itemCompletedTxt = itemView.findViewById(R.id.list_sub_completed);
+        TextView itemDate = itemView.findViewById(R.id.list_date);
+        TextView itemTime = itemView.findViewById(R.id.list_time);
         CheckBox subCheckbox = itemView.findViewById(R.id.subCheckbox);
 
 
