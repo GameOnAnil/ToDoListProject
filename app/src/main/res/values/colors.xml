@@ -6,4 +6,7 @@
 
     <color name="gray">#CDCBCB</color>
     <color name="red">#DD1010</color>
+
+    <color name="listBackgroundPink">#CB59DF</color>
+    <color name="darkerPink">#841E97</color>
 </resources>

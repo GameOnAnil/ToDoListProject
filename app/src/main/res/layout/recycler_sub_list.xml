@@ -1,62 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="2dp"
+    android:background="#fff"
+    android:layout_marginBottom="3dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp">
 
-    <CheckBox
-        android:id="@+id/subCheckbox"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:gravity="center_horizontal" />
+        android:paddingEnd="4dp"
+        >
+        <CheckBox
+            android:id="@+id/subCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center_horizontal" />
 
-    <TextView
-        android:id="@+id/list_sub_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/subCheckbox"
-        android:hint="Task"
-        android:textColor="#000"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/list_sub_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/subCheckbox"
+            android:hint="Task"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/list_sub_completed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="14dp"
-        android:textSize="12sp"
+        <TextView
+            android:id="@+id/list_sub_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
+            android:textSize="12sp"
+            android:textColor="@color/red"
 
-        android:layout_alignBottom="@id/list_time"/>
+            android:layout_alignBottom="@id/list_time"/>
 
-    <TextView
-        android:id="@+id/list_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="date"
-        android:textSize="13dp"
+        <TextView
+            android:id="@+id/list_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="date"
+            android:textSize="13dp"
 
-        android:layout_below="@+id/list_sub_name"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toRightOf="@+id/subCheckbox"/>
+            android:layout_below="@+id/list_sub_name"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toRightOf="@+id/subCheckbox"/>
 
-    <TextView
-        android:id="@+id/list_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/list_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:hint="time"
-        android:textSize="13dp"
+            android:hint="time"
+            android:textSize="13dp"
 
-       android:layout_toEndOf="@id/list_date"
-        android:layout_below="@id/list_sub_name"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/list_date"
+            android:layout_below="@id/list_sub_name"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="6dp"
 
-        />
+            />
+    </RelativeLayout>
 
-</RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
