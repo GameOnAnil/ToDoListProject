@@ -2,6 +2,7 @@ package com.example.todolistproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +39,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     private RecyclerView recyclerView;
     private String documentId;
     private Toolbar toolbar;
+    CoordinatorLayout coordinatorLayout;
 
     private ActionMode mActionMode;
 
@@ -55,6 +57,8 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        coordinatorLayout = findViewById(R.id.coordinator_sub);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.fab_sub);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +164,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
                 Log.d(TAG, "Data deleted");
             }
         });
-        Snackbar.make(recyclerView, "Are you sure", Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, "Are you sure", Snackbar.LENGTH_LONG)
                 .setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

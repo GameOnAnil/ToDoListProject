@@ -5,9 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="2dp"
     android:background="#fff"
-    android:layout_marginBottom="3dp"
-    android:layout_marginStart="3dp"
-    android:layout_marginEnd="3dp">
+    android:layout_marginTop="3dp"
+   >
 
     <RelativeLayout
         android:layout_width="match_parent"
