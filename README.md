@@ -6,6 +6,7 @@ Goal: To use following components
 4. Fragments maybe?
 5. Splash screen
 6. Custom icon
+7. Date and TimePicker
 
 
 What my app will have
