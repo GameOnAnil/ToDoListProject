@@ -44,7 +44,7 @@ android:background="@color/listBackgroundPink"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/darkerPink"/>
+        android:backgroundTint="#fff"/>
 
     <LinearLayout
         android:layout_width="match_parent"

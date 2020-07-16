@@ -3,16 +3,19 @@ package com.example.todolistproject;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,8 +26,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ListItemListener {
     private static final String TAG = "MainActivity";
@@ -33,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerAdapter adapter;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
 
         Toolbar toolbar_main = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar_main);
+
+        coordinatorLayout = findViewById(R.id.coordinator_main);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -55,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         });
 
         recyclerView = findViewById(R.id.recycler_view);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         setUpRecyclerView();
 
@@ -63,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     private void showAlertDialog() {
         final EditText editText = new EditText(this);
         editText.setHint("Enter list name");
+
 
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Add list")
@@ -132,4 +146,47 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         startActivity(intent);
 
     }
+
+    @Override
+    public void handleDeleteItem(DocumentSnapshot snapshot) {
+        final DocumentReference documentReference = snapshot.getReference();
+        final ListModel listModel = snapshot.toObject(ListModel.class);
+
+        documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Data deleted");
+            }
+        });
+        Snackbar.make(coordinatorLayout, "Are you sure", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        documentReference.set(listModel);
+                    }
+                }).setDuration(10000).show();
+    }
+
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            adapter.deleteItem(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.red))
+                    .addActionIcon(R.drawable.ic_delete)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 }

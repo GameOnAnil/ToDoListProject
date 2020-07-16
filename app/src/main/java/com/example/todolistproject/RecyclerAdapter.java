@@ -36,9 +36,14 @@ public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, Recycle
         return new Viewholder(view);
     }
 
+    public void deleteItem(int position) {
+        listItemListener.handleDeleteItem(getSnapshots().getSnapshot(position));
 
+    }
     public class Viewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTv = itemView.findViewById(R.id.list_title);
+
+
 
         public Viewholder(@NonNull final View itemView) {
             super(itemView);
@@ -59,6 +64,7 @@ public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, Recycle
     }
     public interface ListItemListener{
         void onItemClicked(DocumentSnapshot snapshot);
+        void handleDeleteItem(DocumentSnapshot snapshot);
 
     }
 
