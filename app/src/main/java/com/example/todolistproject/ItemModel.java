@@ -4,13 +4,15 @@ public class ItemModel {
     String item;
     String date;
     String time;
+    Boolean completed;
 
     public ItemModel(){}
 
-    public ItemModel(String item, String date, String time) {
+    public ItemModel(String item, String date, String time,Boolean completed) {
         this.item = item;
         this.date = date;
         this.time = time;
+        this.completed = completed;
     }
 
     public String getDate() {
@@ -35,5 +37,13 @@ public class ItemModel {
 
     public void setItem(String item) {
         this.item = item;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 }

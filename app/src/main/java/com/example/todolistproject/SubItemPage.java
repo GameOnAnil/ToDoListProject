@@ -173,4 +173,15 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
                 }).show();
     }
 
+    @Override
+    public void updateCompleted(DocumentSnapshot snapshot, Boolean choice) {
+        DocumentReference documentReference = snapshot.getReference();
+        documentReference.update("completed",choice ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: Data updated");
+            }
+        });
+    }
+
 }

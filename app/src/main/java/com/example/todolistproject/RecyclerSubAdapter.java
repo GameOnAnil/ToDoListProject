@@ -21,7 +21,7 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
     private static final String TAG = "RecyclerSubAdapter";
     SubItemListener subItemListener;
 
-    public RecyclerSubAdapter(@NonNull FirestoreRecyclerOptions<ItemModel> options,SubItemListener subItemListener) {
+    public RecyclerSubAdapter(@NonNull FirestoreRecyclerOptions<ItemModel> options, SubItemListener subItemListener) {
         super(options);
         this.subItemListener = subItemListener;
     }
@@ -31,6 +31,19 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
         holder.itemName.setText(model.getItem());
         holder.itemDate.setText(model.getDate());
         holder.itemTime.setText(model.getTime());
+
+        Boolean completeFromDb = model.getCompleted();
+        if (completeFromDb == false) {
+            //holder.subCheckbox.setSelected(false);
+            holder.subCheckbox.setChecked(false);
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.itemCompletedTxt.setText("");
+        } else {
+            //holder.subCheckbox.setSelected(true);
+            holder.subCheckbox.setChecked(true);
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.itemCompletedTxt.setText("Completed");
+        }
     }
 
     @NonNull
@@ -43,6 +56,11 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
     public void removeItem(int position) {
         subItemListener.handleDeleteItem(getSnapshots().getSnapshot(position));
 
+
+    }
+
+    public void updateItem(int position, Boolean choice) {
+        subItemListener.updateCompleted(getSnapshots().getSnapshot(position), choice);
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
@@ -60,7 +78,7 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         subItemListener.subItemClicked(getSnapshots().getSnapshot(getAdapterPosition()));
                     }
                 }
@@ -69,12 +87,16 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
             subCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!itemName.getPaint().isStrikeThruText()){
+                    if (!itemName.getPaint().isStrikeThruText()) {
                         itemName.setPaintFlags(itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         itemCompletedTxt.setText("Completed");
-                    }else{
-                        itemName.setPaintFlags(itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG) );
+                        updateItem(getAdapterPosition(), true);
+
+
+                    } else {
+                        itemName.setPaintFlags(itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                         itemCompletedTxt.setText("");
+                        updateItem(getAdapterPosition(), false);
                     }
 
                 }
@@ -84,11 +106,13 @@ public class RecyclerSubAdapter extends FirestoreRecyclerAdapter<ItemModel, Recy
 
     }
 
-    interface SubItemListener{
+    interface SubItemListener {
         public void subItemClicked(DocumentSnapshot snapshot);
-        public void handleDeleteItem(DocumentSnapshot snapshot);
-    }
 
+        public void handleDeleteItem(DocumentSnapshot snapshot);
+
+        public void updateCompleted(DocumentSnapshot snapshot, Boolean choice);
+    }
 
 
 }

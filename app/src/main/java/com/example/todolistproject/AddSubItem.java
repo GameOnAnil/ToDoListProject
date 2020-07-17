@@ -41,6 +41,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     String toStoreDesc;
     String toStoreDate;
     String toStoreTime;
+    Boolean toStoreComplete = false;
     String documentId;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -95,7 +96,8 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
                 toStoreDate = txt_date.getText().toString();
                 toStoreTime = txt_time.getText().toString();
 
-                ItemModel itemModel = new ItemModel(toStoreDesc,toStoreDate,toStoreTime);
+
+                ItemModel itemModel = new ItemModel(toStoreDesc,toStoreDate,toStoreTime,toStoreComplete);
 
                 if (!toStoreDesc.equals("")) {
 
