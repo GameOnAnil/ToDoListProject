@@ -144,9 +144,16 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
     @Override
     public void subItemClicked(DocumentSnapshot snapshot) {
-        String id = snapshot.getId();
-        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:" + id);
-        Toast.makeText(this, "Item clicked" + id, Toast.LENGTH_SHORT).show();
+        String subDocumentId = snapshot.getId();
+        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:" + subDocumentId);
+        //Toast.makeText(this, "Item clicked" + subDocumentId, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getApplicationContext(), AddSubItem.class);
+        intent.putExtra("id", documentId);
+        intent.putExtra("subDocumentId",subDocumentId);
+        intent.putExtra("toUpdate",true);
+        startActivity(intent);
+
     }
 
 
