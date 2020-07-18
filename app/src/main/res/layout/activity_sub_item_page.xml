@@ -29,6 +29,7 @@ android:background="@color/listBackgroundPink"
             app:title="Task list"
             app:titleTextColor="#fff"
             android:background="@color/listBackgroundPink"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             />
     </com.google.android.material.appbar.AppBarLayout>
 

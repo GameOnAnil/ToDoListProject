@@ -1,10 +1,12 @@
 package com.example.todolistproject;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -127,12 +129,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void showAlertDialog() {
         final EditText editText = new EditText(this);
+        float dpi = editText.getResources().getDisplayMetrics().density;
         editText.setHint("Enter list name");
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Add New list")
-                .setView(editText)
+                .setView(editText,(int)(19*dpi), (int)(5*dpi), (int)(14*dpi), (int)(5*dpi))
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -162,24 +166,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     }
 
     private void showHintDialog() {
-
-        final TextView textView1 = new TextView(this);
-        textView1.setText("  1. Press on + button to add new List\n  2. Swipe Right to delete list\n  3. Press on list to view task");
-        textView1.setTextSize(20);
-        textView1.setPadding(5,0,0,0);
-        textView1.setTextColor(Color.BLACK);
-
-      AlertDialog.Builder alertDialog  =  new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Hint")
-                .setView(textView1)
-                .setPositiveButton("Dimiss", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-      alertDialog.show();
-
+        Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.hint_dialog_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
                 }
 
 

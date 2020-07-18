@@ -8,14 +8,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -192,4 +196,25 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = new MenuInflater(getApplicationContext());
+        menuInflater.inflate(R.menu.sub_task_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.item_sub_hint){
+            Toast.makeText(this, "hint", Toast.LENGTH_SHORT).show();
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.hint_dialog_layout_sub);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+    }
 }
