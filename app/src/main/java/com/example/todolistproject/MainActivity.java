@@ -4,12 +4,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -36,6 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -99,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                         showAlertDialog();
                         return true;
                     case R.id.item_hint:
-                        Toast.makeText(MainActivity.this, "Function not available right now", Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        showHintDialog();
                         return true;
                     case R.id.item_share:
                         Toast.makeText(MainActivity.this, "Function not available right now", Toast.LENGTH_SHORT).show();
@@ -140,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
-                                            Toast.makeText(MainActivity.this, "Data added", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "New List Created", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MainActivity.this, "Hint: Swipe Right To Delete", Toast.LENGTH_SHORT).show();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -154,6 +160,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                     }
                 }).show();
     }
+
+    private void showHintDialog() {
+
+        final TextView textView1 = new TextView(this);
+        textView1.setText("  1. Press on + button to add new List\n  2. Swipe Right to delete list\n  3. Press on list to view task");
+        textView1.setTextSize(20);
+        textView1.setPadding(5,0,0,0);
+        textView1.setTextColor(Color.BLACK);
+
+      AlertDialog.Builder alertDialog  =  new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Hint")
+                .setView(textView1)
+                .setPositiveButton("Dimiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+      alertDialog.show();
+
+                }
+
 
     public void setUpRecyclerView() {
         Query query = db.collection("List");

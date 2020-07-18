@@ -72,6 +72,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
 
         setUpRecyclerView();
+        Toast.makeText(this, "Hint: Swipe Right To Delete Task", Toast.LENGTH_LONG).show();
 
     }
 
