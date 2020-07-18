@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,11 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +77,56 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
 
         setUpRecyclerView();
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,
+                drawerLayout,
+                toolbar_main,
+                R.string.drawer_open,
+                R.string.drawer_close);
+        actionBarDrawerToggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view_main);
+        navigationView.setCheckedItem(R.id.item_main);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_main:
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.item_add_list:
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        showAlertDialog();
+                        return true;
+                    case R.id.item_hint:
+                        Toast.makeText(MainActivity.this, "Function not available right now", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.item_share:
+                        Toast.makeText(MainActivity.this, "Function not available right now", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void showAlertDialog() {
         final EditText editText = new EditText(this);
         editText.setHint("Enter list name");
-
-
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Add list")
+                .setTitle("Add New list")
                 .setView(editText)
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
@@ -101,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                                     Log.d(TAG, "onFailure!!!!!!!!: " + e.toString());
                                 }
                             });
-                        }else{
+                        } else {
                             Toast.makeText(MainActivity.this, "Please enter list name", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -114,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                 .setQuery(query, ListModel.class)
                 .build();
 
-        adapter = new RecyclerAdapter(options,this);
+        adapter = new RecyclerAdapter(options, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -139,10 +186,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     public void onItemClicked(DocumentSnapshot snapshot) {
 
         String id = snapshot.getId();
-        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:"+id);
+        Log.d(TAG, "onItemClicked: !!!!!!!!!!!!! and id:" + id);
 
-        Intent intent = new Intent(getApplicationContext(),SubItemPage.class);
-        intent.putExtra("id",id);
+        Intent intent = new Intent(getApplicationContext(), SubItemPage.class);
+        intent.putExtra("id", id);
         startActivity(intent);
 
     }
@@ -168,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     }
 
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;

@@ -5,6 +5,11 @@
         <item name="colorPrimary">@color/listBackgroundPink</item>
         <item name="colorPrimaryDark">@color/listBackgroundPink</item>
         <item name="colorAccent">@color/listBackgroundPink</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 
 

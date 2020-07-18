@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/item_main"
+        android:icon="@drawable/ic_baseline_featured_play_list_24"
+        android:title="Main Page"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item_add_list"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:title="Add new List"
+        app:showAsAction="ifRoom" />
+
+
+    <item android:title="More option">
+        <menu>
+            <item
+                android:id="@+id/item_hint"
+                android:icon="@drawable/ic_baseline_help_24"
+                android:title="Show hint"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/item_share"
+                android:icon="@drawable/ic_share"
+                android:title="Share"
+                app:showAsAction="ifRoom" />
+
+        </menu>
+
+    </item>
+
+
+</menu>
