@@ -50,18 +50,32 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         //setting up auth user
-        if (mCurrentUser == null) {
+
             mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    Log.d(TAG, "onComplete: ");
 
                     if (task.isSuccessful()) {
-                        Toast.makeText(SplashScreenActivity.this, "auth successful", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onComplete: auth sucessful");
                         mCurrentUser = mAuth.getCurrentUser();
 
                         initNewCollection(mCurrentUser);
                         db.collection("User").document(mCurrentUser.getUid()).collection("Liset").document().delete();
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                mCurrentUser = mAuth.getCurrentUser();
+                                String userId = mCurrentUser.getUid();
+                                Log.d(TAG, "run: uid is : " + userId);
+                                intent.putExtra("userId", userId);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }, 850);
 
 
 
@@ -70,22 +84,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                mCurrentUser = mAuth.getCurrentUser();
-                String userId = mCurrentUser.getUid();
-                Log.d(TAG, "run: uid is : " + userId);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-                finish();
-            }
-        }, 850);
+
 
 
 
