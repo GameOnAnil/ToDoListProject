@@ -57,11 +57,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Log.d(TAG, "onComplete: ");
 
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "onComplete: auth sucessful");
+                        Log.d(TAG, "onComplete: auth successful");
                         mCurrentUser = mAuth.getCurrentUser();
 
                         initNewCollection(mCurrentUser);
-                        db.collection("User").document(mCurrentUser.getUid()).collection("Liset").document().delete();
+                        db.collection("User").document(mCurrentUser.getUid()).collection("List").document().delete();
 
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -84,12 +84,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-
-
-
-
     }
 
     @Override

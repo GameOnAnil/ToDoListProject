@@ -37,6 +37,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Objects;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter.SubItemListener {
@@ -61,7 +63,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
         toolbar = findViewById(R.id.toolbar_sub_page);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         coordinatorLayout = findViewById(R.id.coordinator_sub);
@@ -102,9 +104,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
     }
-
 
     @Override
     protected void onStart() {
@@ -118,7 +118,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         }
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -127,7 +126,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         }
         Log.d(TAG, "onStop: ");
     }
-
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
@@ -151,7 +149,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         }
     };
 
-
     @Override
     public void subItemClicked(DocumentSnapshot snapshot) {
         String subDocumentId = snapshot.getId();
@@ -165,8 +162,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         startActivity(intent);
 
     }
-
-
 
     @Override
     public void handleDeleteItem(DocumentSnapshot snapshot) {
@@ -210,16 +205,28 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.item_sub_hint){
-            Toast.makeText(this, "hint", Toast.LENGTH_SHORT).show();
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.hint_dialog_layout_sub);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.show();
+        switch (item.getItemId()){
+            case R.id.item_sub_hint:
+                Toast.makeText(this, "hint", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new Dialog(this);
+                dialog.setContentView(R.layout.hint_dialog_layout_sub);
+                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+                return true;
 
-            return true;
-        }else{
-            return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+
         }
+
+
+
+
+
     }
 }

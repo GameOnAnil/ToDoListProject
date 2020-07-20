@@ -99,11 +99,13 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void initUpdatePage() {
+        Log.d(TAG, "initUpdatePage called");
         db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list").document(subDocumentId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    Log.d(TAG, "onSuccess: Snapshot exists");
                     String itemFromDb = snapshot.getString("item");
                     String dateFromDb = snapshot.getString("date");
                     String timeFromDb = snapshot.getString("time");
@@ -135,15 +137,12 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
                 toStoreDate = txt_date.getText().toString();
                 toStoreTime = txt_time.getText().toString();
 
-                if (isUpdatePage == true) {
+                if (isUpdatePage) {
                     updateOld();
-
-
                 } else {
                     saveNew();
                 }
                 return true;
-
             case android.R.id.home:
                 Log.d(TAG, "onOptionsItemSelected: back arrow");
                 finish();
