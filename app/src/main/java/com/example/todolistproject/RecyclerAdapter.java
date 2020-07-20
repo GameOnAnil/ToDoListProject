@@ -1,5 +1,6 @@
 package com.example.todolistproject;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, RecyclerAdapter.Viewholder>  {
+    private static final String TAG = "RecyclerAdapter";
 
     ListItemListener listItemListener;
 
@@ -24,8 +26,7 @@ public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, Recycle
 
     @Override
     protected void onBindViewHolder(@NonNull Viewholder holder, int position, @NonNull ListModel model) {
-        holder.titleTv.setText(model.getTitle());
-
+            holder.titleTv.setText(model.getTitle());
 
     }
 
@@ -42,8 +43,6 @@ public class RecyclerAdapter extends FirestoreRecyclerAdapter<ListModel, Recycle
     }
     public class Viewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTv = itemView.findViewById(R.id.list_title);
-
-
 
         public Viewholder(@NonNull final View itemView) {
             super(itemView);

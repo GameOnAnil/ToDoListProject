@@ -1,13 +1,15 @@
 package com.example.todolistproject;
 
 public class ListModel {
+    int check;
     String title;
 
 
     public ListModel(){}
 
-    public ListModel(String title) {
+    public ListModel(String title,int check) {
         this.title = title;
+        this.check = check;
 
     }
 
@@ -19,6 +21,11 @@ public class ListModel {
         this.title = title;
     }
 
+    public int getCheck() {
+        return check;
+    }
 
-
+    public void setCheck(int check) {
+        this.check = check;
+    }
 }

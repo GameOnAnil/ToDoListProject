@@ -43,7 +43,7 @@ public class AddList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toStore = addTitle.getText().toString();
-                ListModel listModel = new ListModel(toStore);
+                ListModel listModel = new ListModel(toStore,0);
 
                 if (!toStore.equals("")) {
 

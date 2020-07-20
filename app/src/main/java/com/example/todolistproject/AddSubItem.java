@@ -46,6 +46,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     Boolean toStoreComplete = false;
     String documentId;
     String subDocumentId;
+    String userId;
     Boolean isUpdatePage;
     Toolbar toolbar_add_list;
 
@@ -83,9 +84,11 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
         });
 
         Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
         documentId = intent.getStringExtra("id");
         subDocumentId = intent.getStringExtra("subDocumentId");
         isUpdatePage = intent.getBooleanExtra("toUpdate", false);
+
 
         if (isUpdatePage == true) {
             initUpdatePage();
@@ -96,7 +99,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void initUpdatePage() {
-        db.collection("List").document(documentId).collection("Sub list").document(subDocumentId)
+        db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list").document(subDocumentId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot snapshot) {
@@ -153,7 +156,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     public void saveNew() {
         ItemModel itemModel = new ItemModel(toStoreDesc, toStoreDate, toStoreTime, toStoreComplete);
         if (!toStoreDesc.equals("")) {
-            db.collection("List").document(documentId).collection("Sub list").add(itemModel)
+            db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list").add(itemModel)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -175,7 +178,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
 
         ItemModel itemModel = new ItemModel(toStoreDesc, toStoreDate, toStoreTime, toStoreComplete);
         if (!toStoreDesc.equals("")) {
-            db.collection("List").document(documentId).collection("Sub list").document(subDocumentId)
+            db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list").document(subDocumentId)
                     .update("item", itemModel.getItem(), "date", itemModel.getDate(), "time", itemModel.getTime())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

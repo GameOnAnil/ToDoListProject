@@ -17,11 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,10 +48,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ListItemListener {
     private static final String TAG = "MainActivity";
+
     private RecyclerView recyclerView;
     private String toStore;
 
@@ -54,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
     RecyclerAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
     DrawerLayout drawerLayout;
+
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +76,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
 
         coordinatorLayout = findViewById(R.id.coordinator_main);
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this,AddList.class);
-//                startActivity(intent);
                 showAlertDialog();
-
             }
         });
 
@@ -81,7 +88,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        setUpRecyclerView();
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+        Log.d(TAG, "onCreate: userId recieved: " + userId);
+
+        //Setup Recycler view
+
+        setUpRecyclerView(userId);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,
@@ -114,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
                     default:
                         return false;
                 }
-
             }
 
         });
@@ -136,16 +148,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         editText.setHint("Enter list name");
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Add New list")
-                .setView(editText,(int)(19*dpi), (int)(5*dpi), (int)(14*dpi), (int)(5*dpi))
+                .setView(editText, (int) (19 * dpi), (int) (5 * dpi), (int) (14 * dpi), (int) (5 * dpi))
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         toStore = editText.getText().toString();
-                        ListModel listModel = new ListModel(toStore);
+                        ListModel listModel = new ListModel(toStore,0);
 
                         if (!toStore.equals("")) {
 
-                            db.collection("List").add(listModel)
+                            db.collection("User").document(userId).collection("List").add(listModel)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
@@ -170,27 +182,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         dialog.setContentView(R.layout.hint_dialog_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
-                }
+    }
 
 
-    public void setUpRecyclerView() {
-        Query query = db.collection("List");
+    public void setUpRecyclerView(String userId) {
+        Query query = db.collection("User").document(userId).collection("List").whereLessThan("check",100);
         FirestoreRecyclerOptions<ListModel> options = new FirestoreRecyclerOptions.Builder<ListModel>()
                 .setQuery(query, ListModel.class)
                 .build();
 
         adapter = new RecyclerAdapter(options, this);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
         Log.d(TAG, "onStart: ");
+
     }
+
 
     @Override
     protected void onStop() {
@@ -208,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
 
         Intent intent = new Intent(getApplicationContext(), SubItemPage.class);
         intent.putExtra("id", id);
+        intent.putExtra("userId",userId);
         startActivity(intent);
 
     }
@@ -254,4 +269,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+
 }

@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,7 +44,8 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     private RecyclerView recyclerView;
     private String documentId;
     private Toolbar toolbar;
-    CoordinatorLayout coordinatorLayout;
+    private CoordinatorLayout coordinatorLayout;
+    private String userId;
 
     private ActionMode mActionMode;
 
@@ -70,6 +72,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddSubItem.class);
                 intent.putExtra("id", documentId);
+                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });
@@ -84,8 +87,9 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         Log.d(TAG, "setUpRecyclerView: setUpRecyclerView() called");
         Intent intent = getIntent();
         documentId = intent.getStringExtra("id");
+        userId = intent.getStringExtra("userId");
 
-        Query query = db.collection("List").document(documentId).collection("Sub list");
+        Query query = db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list");
         final FirestoreRecyclerOptions<ItemModel> options = new FirestoreRecyclerOptions.Builder<ItemModel>()
                 .setQuery(query, ItemModel.class)
                 .build();
@@ -111,7 +115,8 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         if (adapter != null) {
             adapter.startListening();
         }
-    }
+        }
+
 
 
     @Override
