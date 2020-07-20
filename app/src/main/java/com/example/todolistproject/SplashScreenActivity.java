@@ -57,6 +57,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
                         Toast.makeText(SplashScreenActivity.this, "auth successful", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onComplete: auth sucessful");
+                        mCurrentUser = mAuth.getCurrentUser();
+
+                        initNewCollection(mCurrentUser);
+                        db.collection("User").document(mCurrentUser.getUid()).collection("Liset").document().delete();
+
+
+
                     } else {
                         Log.d(TAG, "onComplete:auth failure");
                     }
@@ -64,9 +72,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             });
         }
 
-        initNewCollection(mCurrentUser);
-
-        db.collection("User").document(mCurrentUser.getUid()).collection("Liset").document().delete();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -81,6 +86,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, 850);
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mCurrentUser = mAuth.getCurrentUser();
     }
 
     public void initNewCollection(FirebaseUser mCurrentUser) {
@@ -108,8 +122,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 public void onSuccess(DocumentReference documentReference) {
                                     Log.d(TAG, "onSuccess: InitNewCollection successful");
                                     String docId = documentReference.getId();
-                                    Log.d(TAG, "onSuccess: init doc id is"+docId);
-
                                     db.collection("User").document(userId).collection("List").document(docId).delete();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
