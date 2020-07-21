@@ -95,7 +95,6 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
             toolbar_add_list.setTitle("Update task");
         }
 
-
     }
 
     private void initUpdatePage() {
@@ -159,7 +158,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(AddSubItem.this, "Data added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddSubItem.this, "Task added", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -174,7 +173,6 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
     }
 
     public void updateOld() {
-
         ItemModel itemModel = new ItemModel(toStoreDesc, toStoreDate, toStoreTime, toStoreComplete);
         if (!toStoreDesc.equals("")) {
             db.collection("User").document(userId).collection("List").document(documentId).collection("Sub list").document(subDocumentId)
@@ -182,7 +180,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(AddSubItem.this, "Data updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddSubItem.this, "Task updated", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
@@ -222,6 +220,5 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
             amPm = "AM";
         }
         txt_time.setText(String.format("%02d:%02d ", hour, minute) + amPm);
-
     }
 }

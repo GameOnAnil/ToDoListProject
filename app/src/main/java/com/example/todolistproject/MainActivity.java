@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.L
         final EditText editText = new EditText(this);
         float dpi = editText.getResources().getDisplayMetrics().density;
         editText.setHint("Enter list name");
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Add New list")
                 .setView(editText, (int) (19 * dpi), (int) (5 * dpi), (int) (14 * dpi), (int) (5 * dpi))

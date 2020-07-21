@@ -8,7 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,7 +16,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_add_sub"
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginTop="3dp"
@@ -58,7 +58,7 @@
                 android:id="@+id/txt_sub_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,12 +67,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
             android:hint="Enter date"
             android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundMode="outline"
             app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
             app:endIconMode="custom"
-            app:helperText="Enter date"
+            app:helperText="Due date"
             app:helperTextEnabled="true"
             >
 
@@ -96,7 +97,7 @@
             app:boxBackgroundMode="outline"
             app:endIconDrawable="@drawable/ic_baseline_access_time_24"
             app:endIconMode="custom"
-            app:helperText="Enter time"
+            app:helperText="Due time"
             app:helperTextEnabled="true"
             >
 

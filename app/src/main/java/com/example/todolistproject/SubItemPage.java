@@ -208,7 +208,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sub_hint:
-                Toast.makeText(this, "hint", Toast.LENGTH_SHORT).show();
                 Dialog dialog = new Dialog(this);
                 dialog.setContentView(R.layout.hint_dialog_layout_sub);
                 Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
