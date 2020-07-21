@@ -74,7 +74,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddSubItem.class);
                 intent.putExtra("id", documentId);
-                intent.putExtra("userId",userId);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -115,7 +115,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         if (adapter != null) {
             adapter.startListening();
         }
-        }
+    }
 
 
     @Override
@@ -156,9 +156,10 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
         //Toast.makeText(this, "Item clicked" + subDocumentId, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(getApplicationContext(), AddSubItem.class);
+        intent.putExtra("userId",userId);
         intent.putExtra("id", documentId);
-        intent.putExtra("subDocumentId",subDocumentId);
-        intent.putExtra("toUpdate",true);
+        intent.putExtra("subDocumentId", subDocumentId);
+        intent.putExtra("toUpdate", true);
         startActivity(intent);
 
     }
@@ -188,7 +189,7 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     @Override
     public void updateCompleted(DocumentSnapshot snapshot, Boolean choice) {
         DocumentReference documentReference = snapshot.getReference();
-        documentReference.update("completed",choice ).addOnSuccessListener(new OnSuccessListener<Void>() {
+        documentReference.update("completed", choice).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "onSuccess: Data updated");
@@ -199,13 +200,13 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = new MenuInflater(getApplicationContext());
-        menuInflater.inflate(R.menu.sub_task_menu,menu);
+        menuInflater.inflate(R.menu.sub_task_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item_sub_hint:
                 Toast.makeText(this, "hint", Toast.LENGTH_SHORT).show();
                 Dialog dialog = new Dialog(this);
@@ -223,9 +224,6 @@ public class SubItemPage extends AppCompatActivity implements RecyclerSubAdapter
 
 
         }
-
-
-
 
 
     }

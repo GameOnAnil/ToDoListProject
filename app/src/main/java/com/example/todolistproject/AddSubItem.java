@@ -90,7 +90,7 @@ public class AddSubItem extends AppCompatActivity implements DatePickerDialog.On
         isUpdatePage = intent.getBooleanExtra("toUpdate", false);
 
 
-        if (isUpdatePage == true) {
+        if (isUpdatePage) {
             initUpdatePage();
             toolbar_add_list.setTitle("Update task");
         }
